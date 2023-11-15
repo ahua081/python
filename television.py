@@ -71,10 +71,7 @@ class Television:
         Method to show the TV status.
         :return: TV status.
         """
-        if self.__status:
-            if self.__muted:
-                return f'Power = {str(self.status)}, Channel = {str(self.__channel)}, Volume = {Television.MIN_VOLUME} (Muted)'
-            else:
-                return f'Power = {str(self.__status)}, Channel = {str(str.__channel)}, Volume = {str(self.__volume)}'
+        if self.__muted:
+            return f'Power = {str(self.status)}, Channel = {str(self.__channel)}, Volume = {Television.MIN_VOLUME} (Muted)'
         else:
-            return f'Power = {str(self.__status)}, Channel = {Television.MIN_CHANNEL}, Volume = {Television.MIN_VOLUME}'
+            return f'Power = {str(self.__status)}, Channel = {str(self.__channel)}, Volume = {str(self.__volume)}'
