@@ -6,7 +6,13 @@ class Television:
 
     def __init__(self) -> None:
         """
-        Initialize the Television object with default values.
+        Initialize a Television object with default values.
+
+        Instance Variables:
+        __status (bool): Power status (True if on, False if off).
+        __muted (bool): Whether the TV is muted.
+        __volume (int): Current volume level.
+        __channel (int): Current channel.
         """
         self.__status = False
         self.__muted = False
