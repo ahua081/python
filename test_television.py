@@ -32,7 +32,7 @@ class Test:
         self.tv1.volume_up()
         self.tv1.mute()
         assert "Muted" in self.tv1.__str__()
-        assert "Volume" in self.tv1.__str__()
+        assert "Volume = 0 (Muted)" in self.tv1.__str__()
 
         self.tv1.mute()
         assert "Muted" not in self.tv1.__str__()
