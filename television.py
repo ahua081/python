@@ -39,7 +39,10 @@ class Television:
         it should set the TV channel to the minimum channel.
         """
         if self.__status:
-            self.__channel = (self.__channel + 1) % (Television.MAX_CHANNEL + 1)
+            if self.__channel < Television.MAX_CHANNEL:
+                self.__channel += 1
+            else:
+                self.__channel = Television.MIN_CHANNEL
 
     def channel_down(self) -> None:
         """
@@ -63,6 +66,8 @@ class Television:
             self.__muted = False
             if self.__volume < Television.MAX_VOLUME:
                 self.__volume += 1
+            else:
+                self.__volume = Television.MIN_VOLUME
 
     def volume_down(self) -> None:
         """
@@ -72,8 +77,10 @@ class Television:
         """
         if self.__status:
             self.__muted = False
-            if self.__volume > Television.MAX_VOLUME:
+            if self.__volume > Television.MIN_VOLUME:
                 self.__volume -= 1
+            else:
+                self.__volume = Television.MAX_VOLUME
 
     def __str__(self) -> str:
         """
@@ -82,6 +89,6 @@ class Television:
         :return: TV status.
         """
         if self.__muted:
-            return f'Power = {str(self.__status)}, Channel = {str(self.__channel)}, Volume = {Television.MIN_VOLUME} (Muted)'
+            return f'Power = {(self.__status)}, Channel = {(self.__channel)}, Volume = {Television.MIN_VOLUME}'
         else:
-            return f'Power = {str(self.__status)}, Channel = {str(self.__channel)}, Volume = {str(self.__volume)}'
+            return f'Power = {(self.__status)}, Channel = {(self.__channel)}, Volume = {(self.__volume)}'
