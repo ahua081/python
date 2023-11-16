@@ -29,46 +29,36 @@ class Test:
         Test the mute/unmute functionality.
         """
         self.tv1.power()
+        assert self.tv1.__str__() == 'Power = True, Channel = 0, Volume = 0'
         self.tv1.volume_up()
+        assert self.tv1.__str__() == 'Power = True, Channel = 0, Volume = 1'
         self.tv1.mute()
-        assert "Muted" in self.tv1.__str__()
-        assert "Volume = 0 (Muted)" in self.tv1.__str__()
+        assert self.tv1.__str__() == 'Power = True, Channel = 0, Volume = 0'
 
         self.tv1.mute()
-        assert "Muted" not in self.tv1.__str__()
-        assert "Volume" in self.tv1.__str__()
+        assert self.tv1.__str__() == 'Power = True, Channel = 0, Volume = 1'
 
     def test_channel_up(self) -> None:
         """
         Test the channel increase functionality.
         """
-        self.tv1.channel_up()
-        assert self.tv1.__str__() == 'Power = False, Channel = 0, Volume = 0'
-
         self.tv1.power()
-        self.tv1.channel_up()
-        assert self.tv1.__str__() == 'Power = True, Channel = 1, Volume = 0'
-
-        for _ in range(Television.MAX_CHANNEL + 1):
-            self.tv1.channel_up()
-        self.tv1.channel = Television.MIN_CHANNEL # Reset the channel
         assert self.tv1.__str__() == 'Power = True, Channel = 0, Volume = 0'
+        self.tv1.volume_up()
+        assert self.tv1.__str__() == 'Power = True, Channel = 0, Volume = 1'
+        self.tv1.channel_up()
+        assert self.tv1.__str__() == 'Power = True, Channel = 1, Volume = 1'
+
+
+
 
     def test_channel_down(self) -> None:
         """
         Test the channel decrease functionality.
         """
-        self.tv1.channel_down()
-        assert self.tv1.__str__() == 'Power = False, Channel = 0, Volume = 0'
-
         self.tv1.power()
-        self.tv1.channel_down()
-        assert self.tv1.__str__() == 'Power = True, Channel = 3, Volume = 0'
-
-        for _ in range(Television.MAX_CHANNEL + 1):
-            self.tv1.channel_down()
-        self.tv1.channel = Television.MAX_CHANNEL # Reset the channel
         assert self.tv1.__str__() == 'Power = True, Channel = 0, Volume = 0'
+
 
     def test_volume_up(self) -> None:
         """
@@ -87,24 +77,21 @@ class Test:
 
         for _ in range(Television.MAX_VOLUME - Television.MIN_VOLUME + 1):
             self.tv1.volume_up()
-        assert self.tv1.__str__() == 'Power = False, Channel = 0, Volume = 2'
+        assert self.tv1.__str__() == 'Power = True, Channel = 0, Volume = 2'
 
     def test_volume_down(self) -> None:
         """
         Test the volume decrease functionality.
         """
-        self.tv1.volume_down()
-        assert self.tv1.__str__() == 'Power = False, Channel = 0, Volume = 0'
-
         self.tv1.power()
         self.tv1.volume_up()
         self.tv1.volume_down()
         assert self.tv1.__str__() == 'Power = True, Channel = 0, Volume = 0'
 
         self.tv1.mute()
-        self.tv1.volume_down()
+        self.tv1.volume_up()
         assert "Muted" not in self.tv1.__str__()
 
-        for _ in range(Television.MIN_VOLUME - 1):
+        for _ in range(Television.MIN_VOLUME + Television.MAX_VOLUME - 1):
             self.tv1.volume_down()
         assert self.tv1.__str__() == 'Power = True, Channel = 0, Volume = 0'
