@@ -1,8 +1,8 @@
 class Television:
-    MIN_VOLUME: int = 0
-    MAX_VOLUME: int = 2
-    MIN_CHANNEL: int = 0
-    MAX_CHANNEL: int = 3
+    MIN_VOLUME = 0
+    MAX_VOLUME = 2
+    MIN_CHANNEL = 0
+    MAX_CHANNEL = 3
 
     def __init__(self) -> None:
         """
@@ -14,10 +14,10 @@ class Television:
         __volume (int): Current volume level.
         __channel (int): Current channel.
         """
-        self.__status: bool = False # The TV is initially turned off.
-        self.__muted: bool = False
-        self.__volume: int = Television.MIN_VOLUME
-        self.__channel: int = Television.MIN_CHANNEL
+        self.__status = False
+        self.__muted = False
+        self.__volume = Television.MIN_VOLUME
+        self.__channel = Television.MIN_CHANNEL
 
     def power(self) -> None:
         """
@@ -60,7 +60,7 @@ class Television:
         the volume should just remain at the maximum.
         """
         if self.__status:
-            self.__muted = False # Unmute when adjusting volume.
+            self.__muted = False
             if self.__volume < Television.MAX_VOLUME:
                 self.__volume += 1
 
@@ -78,9 +78,10 @@ class Television:
     def __str__(self) -> str:
         """
         Method to show the TV status.
+        Return the TV status as a string.
         :return: TV status.
         """
         if self.__muted:
-            return f'Power = {str(self.status)}, Channel = {str(self.__channel)}, Volume = {Television.MIN_VOLUME} (Muted)'
+            return f'Power = {str(self.__status)}, Channel = {str(self.__channel)}, Volume = {Television.MIN_VOLUME} (Muted)'
         else:
             return f'Power = {str(self.__status)}, Channel = {str(self.__channel)}, Volume = {str(self.__volume)}'
