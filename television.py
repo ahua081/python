@@ -62,9 +62,10 @@ class Television:
         If the TV is on the maximum volume and this method is called,
         the volume should just remain at the maximum.
         """
-        if self.__status and not self.__muted:
-        if self.__volume < Television.MAX_VOLUME:
-            self.__volume += 1
+        if self.__status:
+            self.__muted = False
+            if self.__volume < Television.MAX_VOLUME:
+                self.__volume += 1
 
     def volume_down(self) -> None:
         """
@@ -72,9 +73,10 @@ class Television:
         If the TV is on the minimum volume and this method is called,
         the volume should just remain at the minimum.
         """
-        if self.__status and not self.__muted:
-        if self.__volume > Television.MIN_VOLUME:
-            self.__volume -= 1
+        if self.__status:
+            self.__muted = False
+            if self.__volume > Television.MIN_VOLUME:
+                self.__volume -= 1
 
     def __str__(self) -> str:
         """
