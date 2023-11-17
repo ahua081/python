@@ -49,16 +49,12 @@ class Test:
         self.tv1.channel_up()
         assert self.tv1.__str__() == 'Power = True, Channel = 1, Volume = 1'
 
-
-
-
     def test_channel_down(self) -> None:
         """
         Test the channel decrease functionality.
         """
         self.tv1.power()
         assert self.tv1.__str__() == 'Power = True, Channel = 0, Volume = 0'
-
 
     def test_volume_up(self) -> None:
         """
@@ -75,7 +71,7 @@ class Test:
         self.tv1.volume_up()
         assert "Muted" not in self.tv1.__str__()
 
-        for _ in range(Television.MAX_VOLUME - Television.MIN_VOLUME + 1):
+        for _ in range(Television.MAX_VOLUME - Television.MIN_VOLUME):
             self.tv1.volume_up()
         assert self.tv1.__str__() == 'Power = True, Channel = 0, Volume = 2'
 
@@ -89,9 +85,9 @@ class Test:
         assert self.tv1.__str__() == 'Power = True, Channel = 0, Volume = 0'
 
         self.tv1.mute()
-        self.tv1.volume_up()
+        self.tv1.volume_down()
         assert "Muted" not in self.tv1.__str__()
 
-        for _ in range(Television.MIN_VOLUME + Television.MAX_VOLUME - 1):
+        for _ in range(Television.MAX_VOLUME - Television.MIN_VOLUME):
             self.tv1.volume_down()
         assert self.tv1.__str__() == 'Power = True, Channel = 0, Volume = 0'
