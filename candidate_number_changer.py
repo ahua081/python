@@ -1,7 +1,13 @@
 from PyQt6.QtWidgets import QDialog, QVBoxLayout, QLabel, QSpinBox, QPushButton
 
 class CandidateNumberChangerWindow(QDialog):
+    """
+    Window for changing the number of candidates.
+    """
     def __init__(self, main_window):
+        """
+        Initialize the CandidateNumberChangerWindow.
+        """
         super(CandidateNumberChangerWindow, self).__init__()
 
         self.setWindowTitle("Change Number of Candidates")
@@ -27,7 +33,9 @@ class CandidateNumberChangerWindow(QDialog):
         self.setLayout(self.layout)
 
     def save_changes(self):
-        # Implement saving changes based on entered number of candidates
+        """
+        Save changes to the number of candidates.
+        """
         new_candidate_count: int = self.candidate_spin_box.value()
 
         if new_candidate_count <= 1:
