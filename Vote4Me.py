@@ -1,14 +1,23 @@
 import sys
 from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QPushButton, QTextEdit, QMessageBox, QDialog
+from PyQt6.QtCore import QTimer
 from PyQt6.QtCore import Qt
 from PyQt6 import uic
 from candidate_name_changer import CandidateNameChangerWindow
 from candidate_number_changer import CandidateNumberChangerWindow
 from candidate_voter import CandidateVoterWindow
 
-
 class Vote4MeWindow(QMainWindow):
     def __init__(self):
+        """
+        Initialize the main window for the Vote4Me application.
+
+        Attributes:
+        - candidates (dict): Dictionary to store candidate names and votes.
+        - number_of_candidates (int): Number of candidates in the election.
+        - new_candidate_count (int): Temporary variable to store the new number of candidates.
+        """
+
         super(Vote4MeWindow, self).__init__()
 
         # Initialize the main window
@@ -53,39 +62,66 @@ class Vote4MeWindow(QMainWindow):
         self.number_of_candidates = 0
         self.new_candidate_count = 0
 
+
     def open_voter_window(self):
-        # Open the CandidateVoter Window
+        """
+        Open the CandidateVoter Window and handle the result when closed.
+        """
         voter_window = CandidateVoterWindow(self)
-        if voter_window.exec() == QDialog.Accepted:
+        if voter_window.exec() == QDialog.DialogCode.Accepted:
             self.show()
 
     def open_number_changer_window(self):
-        # Open the CandidateNumberChanger Window
+        """
+        Open the CandidateNumberChanger Window.
+        """
         number_changer_window = CandidateNumberChangerWindow(self)
         number_changer_window.exec()
 
     def open_name_changer_window(self):
-        # Open the CandidateNameChanger Window
+        """
+        Open the CandidateNameChanger Window.
+        """
         name_changer_window = CandidateNameChangerWindow(self)
         name_changer_window.exec()
 
     def exit_program(self):
-        # Generate and display a summary when exiting the program
-        summary_text = self.generate_summary()
-        self.message_label.setPlainText(summary_text)
+        """
+        Exit the program and display a summary.
+        """
+        try:
+            summary_text = self.generate_summary()
+            self.message_label.setPlainText(summary_text)
+            timer = QTimer(self)
+            timer.timeout.connect(self.close_application)
+            timer.start(5000)
+        except Exception as e:
+            print(f"An exception occurred in exit_program method: {e}")
 
-    # def generate_summary(self):
-    #     # Generate a summary of the votes
-    #     summary_text = "Summary:\n"
-    #     for candidate, votes in self.candidates.items():
-    #         summary_text += f"{candidate}: {votes} votes\n"
-    #     total_votes = sum(self.candidates.values())
-    #     summary_text += f"\nTotal: {total_votes} votes"
-    #     return summary_text
+    def close_application(self):
+        """
+        Close the program. 
+        """
+        sys.exit()
+    def generate_summary(self):
+        try:
+            summary_text = "Summary:\n"
+            for candidate, votes in self.candidates.items():
+                summary_text += f"{candidate}: {votes} votes\n"
+            total_votes = sum(self.candidates.values())
+            summary_text += f"\nTotal: {total_votes} votes"
+            return summary_text
+        except Exception as e:
+            print(f"An exception occurred in generate_summary method: {e}")
+            return "Error generating summary"
 
     def update_summary(self):
+        """
+        Update the summary displayed in the main window.
+        """
         summary_text = self.generate_summary()
         self.message_label.setPlainText(summary_text)
+
 
 if __name__ == "__main__":
     app = QApplication([])
