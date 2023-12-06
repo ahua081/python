@@ -2,9 +2,15 @@ from PyQt6.QtWidgets import QDialog, QVBoxLayout, QLabel, QRadioButton, QPushBut
 from PyQt6.QtCore import pyqtSignal
 
 class CandidateVoterWindow(QDialog):
+    """
+    Window for casting votes for candidates.
+    """
     vote_completed = pyqtSignal(str)
 
     def __init__(self, main_window):
+        """
+        Initialize the CandidateVoter Window.
+        """
         super(CandidateVoterWindow, self).__init__()
 
         # Initialize the CandidateVoter Window
@@ -38,7 +44,9 @@ class CandidateVoterWindow(QDialog):
         self.setLayout(self.layout)
 
     def vote(self):
-        # Check if any candidate is selected
+        """
+        Cast a vote for the selected candidate.
+        """
         selected_candidate = None
         for radio_button in self.radio_buttons:
             if radio_button.isChecked():
@@ -60,7 +68,16 @@ class CandidateVoterWindow(QDialog):
             self.result_label.setText("A candidate must be voted.")
 
     def close_and_show_main_window(self):
-        # Emit signal to indicate vote completed
-        self.vote_completed.emit("Vote completed")
-        # Close the CandidateVoterWindow
+        """
+        Close the window and show the main window.
+        """
         self.accept()
+
+    def get_selected_candidate(self):
+        """
+        Get the selected candidate.
+        """
+        for radio_button in self.radio_buttons:
+            if radio_button.isChecked():
+                return radio_button.text()
+        return None
