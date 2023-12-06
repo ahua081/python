@@ -3,6 +3,9 @@ from PyQt6.QtWidgets import QDialog, QVBoxLayout, QLabel, QLineEdit, QPushButton
 
 class CandidateNameChangerWindow(QDialog):
     def __init__(self, main_window):
+        """
+        Initialize the CandidateNameChangerWindow.
+        """
         super(CandidateNameChangerWindow, self).__init__()
 
         # Initialize the CandidateNameChanger Window
@@ -39,7 +42,9 @@ class CandidateNameChangerWindow(QDialog):
         self.setLayout(self.layout)
 
     def save_changes(self):
-        # Implement saving changes based on entered names
+        """
+        Save changes based on entered names.
+        """
         for i, input_field in enumerate(self.name_inputs):
             candidate_name = input_field.text().strip()
 
