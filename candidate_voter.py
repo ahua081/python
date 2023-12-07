@@ -56,6 +56,7 @@ class CandidateVoterWindow(QDialog):
         if selected_candidate:
             # Check if the selected candidate exists in the dictionary
             if selected_candidate in self.main_window.candidates:
+                # Increment the vote count for the selected candidate
                 self.main_window.candidates[selected_candidate] += 1
 
                 # Display the result in the window itself
@@ -67,11 +68,9 @@ class CandidateVoterWindow(QDialog):
         else:
             self.result_label.setText("A candidate must be voted.")
 
-    def close_and_show_main_window(self):
-        """
-        Close the window and show the main window.
-        """
-        self.accept()
+    def back_clicked(self):
+        """Handle the Back button click."""
+        self.reject()  # Close the dialog with QDialog.Rejected
 
     def get_selected_candidate(self):
         """
@@ -81,3 +80,10 @@ class CandidateVoterWindow(QDialog):
             if radio_button.isChecked():
                 return radio_button.text()
         return None
+
+    def close_and_show_main_window(self):
+        """
+        Close the current window and show the main window.
+        """
+        self.accept()
+        self.main_window.show()
