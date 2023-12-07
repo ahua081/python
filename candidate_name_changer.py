@@ -58,7 +58,7 @@ class CandidateNameChangerWindow(QDialog):
                 return
 
             # Save the candidate names in the main window
-            self.main_window.candidates[candidate_name] = int(self.main_window.number_of_candidates)
+            self.main_window.candidates[candidate_name] = 0
 
         self.error_label.clear()  # Clear any previous error message
         self.accept()  # Close the dialog and return QDialog.Accepted
