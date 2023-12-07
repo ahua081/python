@@ -1,51 +1,89 @@
-from PyQt6.QtWidgets import QDialog, QVBoxLayout, QLabel, QSpinBox, QPushButton
+from PyQt6.QtWidgets import QDialog, QVBoxLayout, QLabel, QRadioButton, QPushButton
+from PyQt6.QtCore import pyqtSignal
 
-class CandidateNumberChangerWindow(QDialog):
+class CandidateVoterWindow(QDialog):
     """
-    Window for changing the number of candidates.
+    Window for casting votes for candidates.
     """
+    vote_completed = pyqtSignal(str)
+
     def __init__(self, main_window):
         """
-        Initialize the CandidateNumberChangerWindow.
+        Initialize the CandidateVoter Window.
         """
-        super(CandidateNumberChangerWindow, self).__init__()
+        super(CandidateVoterWindow, self).__init__()
 
-        self.setWindowTitle("Change Number of Candidates")
-        self.setGeometry(200, 200, 300, 200)
+        # Initialize the CandidateVoter Window
+        self.setWindowTitle("Candidate Voter")
+        self.setGeometry(200, 200, 400, 300)
 
         self.main_window = main_window
 
         self.layout = QVBoxLayout()
 
-        self.instruction_label = QLabel("Please enter the number of candidates you want:", self)
+        self.instruction_label = QLabel("Who do you want to vote for?", self)
         self.layout.addWidget(self.instruction_label)
 
-        self.candidate_spin_box = QSpinBox(self)
-        self.layout.addWidget(self.candidate_spin_box)
+        self.radio_buttons = []
+        for candidate, votes in self.main_window.candidates.items():
+            radio_button = QRadioButton(str(candidate), self)
+            self.radio_buttons.append(radio_button)
+            self.layout.addWidget(radio_button)
 
-        self.error_label = QLabel("", self)  # New label to display errors
-        self.layout.addWidget(self.error_label)
+        self.vote_button = QPushButton("VOTE", self)
+        self.vote_button.clicked.connect(self.vote)
+        self.layout.addWidget(self.vote_button)
 
-        self.save_button = QPushButton("SAVE", self)
-        self.save_button.clicked.connect(self.save_changes)
-        self.layout.addWidget(self.save_button)
+        self.result_label = QLabel("", self)  # Added QLabel for displaying results
+        self.layout.addWidget(self.result_label)
+
+        self.back_button = QPushButton("Back", self)  # Added Back button
+        self.back_button.clicked.connect(self.close_and_show_main_window)
+        self.layout.addWidget(self.back_button)
 
         self.setLayout(self.layout)
 
-    def save_changes(self):
+    def vote(self):
         """
-        Save changes to the number of candidates.
+        Cast a vote for the selected candidate.
         """
-        new_candidate_count: int = self.candidate_spin_box.value()
+        selected_candidate = None
+        for radio_button in self.radio_buttons:
+            if radio_button.isChecked():
+                selected_candidate = radio_button.text()
+                break
 
-        if new_candidate_count <= 1:
-            self.error_label.setText("Please enter at least 2 or more candidates.")
-            return
+        if selected_candidate:
+            # Check if the selected candidate exists in the dictionary
+            if selected_candidate in self.main_window.candidates:
+                # Increment the vote count for the selected candidate
+                self.main_window.candidates[selected_candidate] += 1
 
-        # Update the main window with the new candidate count
-        self.main_window.number_of_candidates = new_candidate_count
-        self.main_window.candidates = {}  # Reset the candidate data
-        self.main_window.new_candidate_count = int(new_candidate_count)
+                # Display the result in the window itself
+                self.result_label.setText(f"You voted for {selected_candidate}.")
 
-        self.error_label.clear()  # Clear any previous error message
-        self.accept()  # Close the dialog and return QDialog.Accepted
+            else:
+                self.result_label.setText(f"Error: {selected_candidate} not found in candidates.")
+
+        else:
+            self.result_label.setText("A candidate must be voted.")
+
+    def back_clicked(self):
+        """Handle the Back button click."""
+        self.reject()  # Close the dialog with QDialog.Rejected
+
+    def get_selected_candidate(self):
+        """
+        Get the selected candidate.
+        """
+        for radio_button in self.radio_buttons:
+            if radio_button.isChecked():
+                return radio_button.text()
+        return None
+
+    def close_and_show_main_window(self):
+        """
+        Close the current window and show the main window.
+        """
+        self.accept()
+        self.main_window.show()
