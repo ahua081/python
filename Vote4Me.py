@@ -62,11 +62,17 @@ class Vote4MeWindow(QMainWindow):
         self.number_of_candidates = 0
         self.new_candidate_count = 0
 
+        # New attribute to store the summary text for display on exit only.
+        self.summary_on_exit = ""
 
     def open_voter_window(self):
         """
         Open the CandidateVoter Window and handle the result when closed.
         """
+        if not self.number_of_candidates or len(self.candidates) != self.number_of_candidates:
+            self.message_label.setPlainText("Please provide the number of candidates and enter their names.")
+            return
+
         voter_window = CandidateVoterWindow(self)
         if voter_window.exec() == QDialog.DialogCode.Accepted:
             self.show()
@@ -82,12 +88,16 @@ class Vote4MeWindow(QMainWindow):
         """
         Open the CandidateNameChanger Window.
         """
+        if not self.number_of_candidates:
+            self.message_label.setPlainText("Please provide the number of candidates.")
+            return
+
         name_changer_window = CandidateNameChangerWindow(self)
         name_changer_window.exec()
 
     def exit_program(self):
         """
-        Exit the program and display a summary.
+        Exit the program and store the summary.
         """
         try:
             summary_text = self.generate_summary()
@@ -100,10 +110,14 @@ class Vote4MeWindow(QMainWindow):
 
     def close_application(self):
         """
-        Close the program. 
+        Close the program and display the summary if available.
         """
         sys.exit()
+
     def generate_summary(self):
+        """
+        Generate the summary in the main window.
+        """
         try:
             summary_text = "Summary:\n"
             for candidate, votes in self.candidates.items():
