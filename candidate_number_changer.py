@@ -39,13 +39,13 @@ class CandidateNumberChangerWindow(QDialog):
         new_candidate_count: int = self.candidate_spin_box.value()
 
         if new_candidate_count <= 1:
-            self.error_label.setText("2 or more candidates are required.")
+            self.error_label.setText("Please enter at least 2 or more candidates.")
             return
 
         # Update the main window with the new candidate count
+        self.main_window.number_of_candidates = new_candidate_count
         self.main_window.candidates = {}  # Reset the candidate data
         self.main_window.new_candidate_count = int(new_candidate_count)
-        # self.main_window.candidates.update({f"Candidate {i + 1}": f"Name {i + 1}" for i in range(new_candidate_count)})
 
         self.error_label.clear()  # Clear any previous error message
         self.accept()  # Close the dialog and return QDialog.Accepted
