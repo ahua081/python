@@ -1,34 +1,21 @@
+# logic.py
 class VoteSystem:
-    # Class to manage candidate information
-    candidates = []
-    num_candidates = 0
+    candidates = {}
 
     @classmethod
-    def set_candidates(cls, candidate_names):
-        # Set the candidate names
-        cls.candidates = candidate_names
+    def initialize_candidates(cls, candidate_names):
+        cls.candidates = {candidate: 0 for candidate in candidate_names}
+
+    @classmethod
+    def vote_for_candidate(cls, candidate):
+        if candidate in cls.candidates:
+            cls.candidates[candidate] += 1
 
     @classmethod
     def get_candidates(cls):
-        # Get the candidate names
         return cls.candidates
 
     @classmethod
-    def set_num_candidates(cls, num_candidates):
-        # Set the number of candidates
-        cls.num_candidates = num_candidates
-
-    @classmethod
-    def get_num_candidates(cls):
-        # Get the number of candidates
-        return cls.num_candidates
-
-    @classmethod
-    def save_candidate_names(cls, candidate_names):
-        # Save the candidate names
-        cls.set_candidates(candidate_names)
-
-    @classmethod
-    def save_num_candidates(cls, num_candidates):
-        # Save the number of candidates
-        cls.set_num_candidates(num_candidates)
+    def set_candidates(cls, candidate_names):
+        # Set the candidate names with initial votes set to 0
+        cls.candidates = {candidate: 0 for candidate in candidate_names}
